@@ -1,0 +1,430 @@
+/* style.css actualizado sin cambio automático a modo claro y con fondo oscuro fijo para chat y formulario */
+
+/* Fuente y reset */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+:root {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --primary-color: #012139;
+  --bot-bubble: #2c2c2c;
+  --user-bubble: #311c24;
+  --input-bg: #2c2c2c;
+  --quick-bg: #333;
+  --quick-border: #555;
+}
+
+/* Botón flotante */
+.chat-toggle {
+  animation: float 3s ease-in-out infinite;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.3s ease;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.1);
+}
+
+.chat-toggle img.lotli-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Mensaje flotante como burbuja */
+.chat-toggle:hover::after {
+  content: "¿Necesitas ayuda?";
+  position: absolute;
+  bottom: 70px;
+  left: -100px;
+  background:  #012139b2;
+  color: #000000;
+  padding: 10px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0.95;
+  z-index: 1000;
+}
+
+.chat-toggle:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 60px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color:#012139b2;
+  transform: rotate(0deg);
+  z-index: 999;
+}
+
+/* Chat container */
+.chat-container {
+  position: fixed;
+  bottom: 90px;
+  right: 30px;
+  width: 350px;
+  max-height: 500px;
+  background: var(--bg-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  transition: all 0.3s ease-in-out;
+}
+
+.chat-container.open {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cabecera */
+.chat-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  gap: 10px;
+}
+
+.chat-header .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header .left img {
+  width: 28px;
+  height: 28px;
+}
+
+.chat-header .chat-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header .chat-controls button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Caja de mensajes */
+.chat-box {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 85%;
+  word-wrap: break-word;
+  animation: fadeInUp 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.quick-option {
+  animation: fadeInUp 0.3s ease-out;
+  transition: background-color 0.3s;
+}
+
+#chat-container {
+  transition: all 0.3s ease-in-out;
+}
+
+.user-message {
+  background-color: var(--user-bubble);
+  align-self: flex-end;
+  text-align: right;
+}
+
+.bot-message {
+  background-color: var(--bot-bubble);
+  align-self: flex-start;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  border: 1px solid #012139;
+}
+.bot-message:has(.contact-buttons) {
+  background-color: var(--bot-bubble) !important;
+  border: 1px solid #311c24;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+
+.chat-image {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.bot-message img.bot-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+}
+
+.input-container {
+  display: flex;
+  border-top: 1px solid #444;
+  padding: 10px;
+  background-color: var(--input-bg);
+}
+
+.input-container input {
+  flex: 1;
+  border: 1px solid  #012139;
+  padding: 10px 14px;
+  border-radius: 25px;
+  outline: none;
+  font-size: 14px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  box-shadow: inset 0 0 3px  #012139;
+}
+
+
+.input-container button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  margin-left: 10px;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.input-container button:hover {
+  background-color: #012139;
+}
+
+.quick-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10px;
+  gap: 10px;
+  background-color: transparent;
+}
+
+.quick-option {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.bot-message:has(.quick-option) {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+.quick-option:hover {
+  background-color:#012139;
+  transform: scale(1.05);
+}
+
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.contact-btn {
+  flex: 1 1 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  padding: 10px 12px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.contact-btn i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.contact-btn:hover {
+  background-color: #012139;
+}
+
+/* Formulario */
+.bot-response:has(.lotli-form) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+}
+
+@keyframes fadeOutDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+.formulario-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  width: 100%;
+}
+
+.formulario-texto {
+  margin-bottom: 12px;
+  font-size: 15px;
+  text-align: center;
+  color: #ddd;
+  font-weight: 500;
+  max-width: 90%;
+}
+
+.lotli-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 95%;
+  padding: 18px;
+  background-color: #2c2c2c;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgb(0, 0, 0);
+  box-sizing: border-box;
+}
+
+.lotli-form input,
+.lotli-form textarea {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  border: 1px solid #555;
+  border-radius: 12px;
+  font-family: inherit;
+  box-sizing: border-box;
+  resize: vertical;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.lotli-form .quick-option {
+  background-color: #720f37;
+  color: #fff;
+  padding: 12px;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lotli-form .quick-option:hover {
+  background-color: #5c0b2b;
+}
+
+@media (max-width: 480px) {
+  .chat-container {
+    width: 95vw;
+    height: 90vh;
+    bottom: 80px;
+    right: 2.5vw;
+  }
+
+  .chat-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .input-container input {
+    font-size: 12px;
+  }
+
+  .input-container button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .message {
+    font-size: 14px;
+  }
+
+  .quick-option {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
