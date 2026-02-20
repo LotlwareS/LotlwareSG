@@ -134,7 +134,7 @@ const Chatbot = () => {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch("http://localhost/lotli-api/enviar-correo.php", {
+      const response = await fetch("http://localhost:3001/api/enviar-correo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +153,7 @@ const Chatbot = () => {
           ...prev,
           {
             sender: "bot",
-            text: "❌ No se pudo enviar el mensaje: " + data.mensaje,
+            text: "✅ ¡Mensaje enviado correctamente! Pronto nos pondremos en contacto contigo.",
           }
         ]);
       } else {
@@ -161,7 +161,7 @@ const Chatbot = () => {
           ...prev,
           {
             sender: "bot",
-            text: "✅ ¡Mensaje enviado correctamente! Pronto nos pondremos en contacto contigo.",
+            text: "❌ No se pudo enviar el mensaje: " + data.mensaje,
           }
         ]);
       }
@@ -179,13 +179,13 @@ const Chatbot = () => {
     form.remove();
   };
 
+  // Attaches submit handler to the injected contact form (rendered via dangerouslySetInnerHTML)
   useEffect(() => {
-    setTimeout(() => {
-      document.getElementById("lang-toggle")?.addEventListener("click", handleToggleLanguage);
-      document.getElementById("theme-toggle")?.addEventListener("click", handleToggleTheme);
-      const form = document.getElementById("contact-form");
-      if (form) form.addEventListener("submit", handleFormSubmit);
-    }, 100);
+    const form = document.getElementById("contact-form");
+    if (form) {
+      form.addEventListener("submit", handleFormSubmit);
+      return () => form.removeEventListener("submit", handleFormSubmit);
+    }
   }, [messages]);
 
   return (
@@ -202,7 +202,7 @@ const Chatbot = () => {
               <span>Asistente Lotli</span>
             </div>
             <div className="chat-controls">
-              <button id="lang-toggle" title="Cambiar idioma">🌐</button>
+              <button onClick={handleToggleLanguage} title="Cambiar idioma">🌐</button>
               <button onClick={toggleChat}><i className="fas fa-times"></i></button>
             </div>
           </div>
