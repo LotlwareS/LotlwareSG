@@ -7,39 +7,75 @@ import jsIcon from "../../assets/js.png";
 import reactIcon from "../../assets/react.svg";
 import phpIcon from "../../assets/php.png";
 import flutterIcon from "../../assets/icons8-flutter-96.png";
-import physicsIcon from "../../assets/physics_753244.png";
 
-const skills = [
-  { name: "HTML5", icon: htmlIcon, level: 90 },
-  { name: "CSS3", icon: cssIcon, level: 85 },
-  { name: "JavaScript", icon: jsIcon, level: 80 },
-  { name: "React", icon: reactIcon, level: 75 },
-  { name: "PHP", icon: phpIcon, level: 70 },
-  { name: "Flutter", icon: flutterIcon, level: 65 },
-  { name: "Algoritmos", icon: physicsIcon, level: 80 },
+const categories = [
+  {
+    name: "Frontend",
+    icons: [
+      { src: htmlIcon, alt: "HTML5" },
+      { src: cssIcon, alt: "CSS3" },
+      { src: jsIcon, alt: "JavaScript" },
+      { src: reactIcon, alt: "React" },
+    ],
+    description: "HTML5, CSS3, JavaScript, React",
+  },
+  {
+    name: "Backend",
+    icons: [
+      { src: phpIcon, alt: "PHP" },
+      { fa: "fas fa-code" },
+    ],
+    description: "PHP, APIs REST, arquitecturas escalables",
+  },
+  {
+    name: "Mobile",
+    icons: [
+      { src: flutterIcon, alt: "Flutter" },
+      { fa: "fab fa-android" },
+    ],
+    description: "Flutter, Android, multiplataforma",
+  },
+  {
+    name: "Bases de Datos",
+    icons: [
+      { fa: "fas fa-database" },
+      { fa: "fas fa-server" },
+    ],
+    description: "MySQL, bases relacionales, consultas y reportes",
+  },
+  {
+    name: "Herramientas",
+    icons: [
+      { fa: "fab fa-git-alt" },
+      { fa: "fab fa-github" },
+    ],
+    description: "Git, GitHub, VS Code, Postman y más",
+  },
 ];
 
 const Skills = () => {
   return (
     <section className="skills-section" id="skills">
       <div className="skills-container">
-        <h2 className="skills-title">Nuestras Habilidades</h2>
+        <h2 className="skills-title">Tecnologías que dominamos</h2>
         <p className="skills-subtitle">
           Dominamos un amplio abanico de tecnologías para construir soluciones completas y modernas.
         </p>
 
         <div className="skills-grid">
-          {skills.map((skill) => (
-            <div className="skill-card" key={skill.name}>
-              <img src={skill.icon} alt={skill.name} className="skill-icon" />
-              <span className="skill-name">{skill.name}</span>
-              <div className="skill-bar-bg">
-                <div
-                  className="skill-bar-fill"
-                  style={{ "--skill-level": `${skill.level}%` }}
-                />
+          {categories.map((cat) => (
+            <div className="skill-card" key={cat.name}>
+              <div className="skill-icons">
+                {cat.icons.map((icon, i) =>
+                  icon.fa ? (
+                    <i key={i} className={icon.fa}></i>
+                  ) : (
+                    <img key={i} src={icon.src} alt={icon.alt} />
+                  )
+                )}
               </div>
-              <span className="skill-percent">{skill.level}%</span>
+              <span className="skill-name">{cat.name}</span>
+              <p className="skill-description">{cat.description}</p>
             </div>
           ))}
         </div>

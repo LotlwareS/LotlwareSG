@@ -1,40 +1,7 @@
 import React, { useState } from "react";
 import "./Projects.css";
-
-const projects = [
-  {
-    title: "LotlwareSG - Sitio Web",
-    description:
-      "Sitio web oficial de Lotlware Solutions Group construido con React y Vite. Incluye secciones de presentación, equipo, habilidades y chatbot inteligente.",
-    tags: ["React", "Vite", "CSS3"],
-    link: "https://github.com",
-    demo: "#",
-  },
-  {
-    title: "Chatbot Lotli",
-    description:
-      "Asistente virtual bilingüe (ES/EN) integrado en el sitio, con historial persistente, modo oscuro y soporte para formulario de contacto.",
-    tags: ["React", "JavaScript", "LocalStorage"],
-    link: "https://github.com",
-    demo: "#",
-  },
-  {
-    title: "Sistema de Inventarios",
-    description:
-      "Aplicación web para gestión de inventario con base de datos MySQL, panel de administración y reportes en PDF.",
-    tags: ["PHP", "MySQL", "Bootstrap"],
-    link: "https://github.com",
-    demo: "#",
-  },
-  {
-    title: "App de Seguimiento Fitness",
-    description:
-      "Aplicación móvil multiplataforma para rastrear rutinas de ejercicio y progreso personal con estadísticas en tiempo real.",
-    tags: ["Flutter", "Firebase", "Dart"],
-    link: "https://github.com",
-    demo: "#",
-  },
-];
+import { projects } from "../../data/projects";
+import ProjectModal from "./ProjectModal";
 
 const tagColors = {
   React: "#61dafb",
@@ -52,6 +19,7 @@ const tagColors = {
 
 const Projects = () => {
   const [hovered, setHovered] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   return (
     <section className="projects-section" id="projects">
@@ -64,21 +32,17 @@ const Projects = () => {
         <div className="projects-grid">
           {projects.map((project, i) => (
             <div
-              key={i}
+              key={project.slug}
               className={`project-card ${hovered === i ? "hovered" : ""}`}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
+              onClick={() => setSelected(project)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && setSelected(project)}
             >
               <div className="project-card-header">
                 <i className="fas fa-folder-open project-folder-icon"></i>
-                <div className="project-links">
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" title="GitHub">
-                    <i className="fab fa-github"></i>
-                  </a>
-                  <a href={project.demo} target="_blank" rel="noopener noreferrer" title="Demo">
-                    <i className="fas fa-external-link-alt"></i>
-                  </a>
-                </div>
               </div>
 
               <h3 className="project-name">{project.title}</h3>
@@ -95,10 +59,22 @@ const Projects = () => {
                   </span>
                 ))}
               </div>
+
+              <button
+                className="project-details-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(project);
+                }}
+              >
+                Ver detalles
+              </button>
             </div>
           ))}
         </div>
       </div>
+
+      {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 };

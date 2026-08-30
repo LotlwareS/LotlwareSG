@@ -134,7 +134,8 @@ const Chatbot = () => {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch("http://localhost:3001/api/enviar-correo", {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
+      const response = await fetch(`${apiUrl}/api/enviar-correo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

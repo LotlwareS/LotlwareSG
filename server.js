@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // ─── Middlewares ──────────────────────────────────────────────────────────────
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173" }));
 app.use(express.json());
 
 // ─── Nodemailer transporter ───────────────────────────────────────────────────
@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
 
 // ─── Ruta principal: envío de correo ─────────────────────────────────────────
 app.post("/api/enviar-correo", async (req, res) => {
-  const { nombre, correo, mensaje } = req.body;
+  const { nombre, correo, asunto, mensaje } = req.body;
 
   if (!nombre || !correo || !mensaje) {
     return res.status(400).json({ éxito: false, mensaje: "Todos los campos son requeridos." });
@@ -31,11 +31,12 @@ app.post("/api/enviar-correo", async (req, res) => {
     from: `"${nombre}" <${process.env.MAIL_USER || "LotlwareSolutions@gmail.com"}>`,
     to: "LotlwareSolutions@gmail.com",
     replyTo: correo,
-    subject: `Nuevo mensaje de contacto de ${nombre}`,
+    subject: asunto ? `${asunto} — ${nombre}` : `Nuevo mensaje de contacto de ${nombre}`,
     html: `
       <h2>Nuevo mensaje desde el sitio web de Lotlware Solutions</h2>
       <p><strong>Nombre:</strong> ${nombre}</p>
       <p><strong>Correo:</strong> ${correo}</p>
+      ${asunto ? `<p><strong>Asunto:</strong> ${asunto}</p>` : ""}
       <hr />
       <p><strong>Mensaje:</strong></p>
       <p>${mensaje.replace(/\n/g, "<br>")}</p>

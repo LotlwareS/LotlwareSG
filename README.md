@@ -1,12 +1,33 @@
-# React + Vite
+# Lotlware Solutions Group
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio web oficial de Lotlware Solutions Group — landing page construida con React y Vite, con un chatbot de contacto integrado.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18+
 
-## Expanding the ESLint configuration
+## Desarrollo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev        # frontend (Vite) en http://localhost:5173
+npm run server      # backend de contacto (Express) en http://localhost:3001
+```
+
+Copia `.env.example` a `.env` y completa las credenciales de correo (contraseña de aplicación de Google) antes de levantar el servidor.
+
+## Build de producción
+
+```bash
+npm run build       # genera dist/
+npm run preview     # sirve el build localmente para verificar
+```
+
+## Estructura
+
+- `src/components/Hero` — cabecera y presentación principal
+- `src/components/aboutus` — sección "Sobre nosotros" / equipo
+- `src/components/Skills` — habilidades técnicas
+- `src/components/Projects` — portafolio de proyectos
+- `src/components/Chatbot` — asistente virtual con formulario de contacto
+- `server.js` — backend Express que envía el formulario de contacto por correo (Nodemailer)

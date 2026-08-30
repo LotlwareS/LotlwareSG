@@ -1,19 +1,16 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Chatbot from './components/Chatbot/Chatbot';
-import Hero from './components/Hero/Hero';
-import Equipo from './components/aboutus/Equipo';
-import Skills from './components/Skills/Skills';
-import Projects from './components/Projects/Projects';
-import Footer from './components/Footer/Footer';
+import Home from './pages/Home';
+import ProjectCaseStudy from './pages/ProjectCaseStudy';
 
 function App() {
   return (
     <div className="App">
-      <Hero />
-      <Equipo />
-      <Skills />
-      <Projects />
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/proyectos/:slug" element={<ProjectCaseStudy />} />
+      </Routes>
       <Chatbot />
     </div>
   );
