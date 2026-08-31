@@ -2,7 +2,7 @@ import React from "react";
 import "./Hero.css";
 import Navbar from "../Navbar/Navbar";
 import fondo from "../../assets/ajolotes_friends.png";
-import icono from "../../assets/logoserio.png";
+import icono from "../../assets/logoSerioSinFondo.png";
 
 const Hero = () => {
   return (
