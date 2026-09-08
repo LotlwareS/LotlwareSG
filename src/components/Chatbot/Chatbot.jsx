@@ -20,11 +20,21 @@ const translations = {
   }
 };
 
+const formatMessage = (text) => {
+  if (!text) return "";
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/\n/g, "<br/>");
+};
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [currentLang, setCurrentLang] = useState(() => localStorage.getItem("lotli-lang") || "es");
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem("lotli-theme") === "dark");
+  const [isTyping, setIsTyping] = useState(false);
+  const [sessionId] = useState(() => Math.random().toString(36).substring(7));
   const chatBoxRef = useRef(null);
 
   useEffect(() => {
@@ -32,10 +42,31 @@ const Chatbot = () => {
     localStorage.setItem("lotli-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
+  const getWelcomeMessage = (lang = currentLang) => ({
+    sender: "bot",
+    text: lang === "es"
+      ? "¡Hola! 👋 Soy **Lotli**, tu asesor en **Lotlware Solutions Group** ✨.<br/><br/>Estoy aquí para acompañarte, resolver dudas sobre tus proyectos de desarrollo web, apps o software a la medida, y ayudarte a agendar una **sesión de asesoría gratuita de 15 minutos**.<br/><br/>¿En qué proyecto te gustaría que trabajemos hoy? 😊☕"
+      : "Hi! 👋 I'm **Lotli**, your advisor at **Lotlware Solutions Group** ✨.<br/><br/>I'm here to answer your questions about web development, apps, or custom software, and help you schedule a **free 15-minute diagnostic session**.<br/><br/>What project are you thinking of? 😊☕",
+    options: lang === "es"
+      ? ["Cotizar proyecto", "¿Qué servicios ofrecen?", "WhatsApp / Contacto directo"]
+      : ["Get a quote", "What services do you offer?", "WhatsApp / Direct contact"]
+  });
+
   useEffect(() => {
     const history = JSON.parse(localStorage.getItem("lotli-history") || "[]");
-    setMessages(history);
+    if (history && history.length > 0) {
+      setMessages(history);
+    } else {
+      setMessages([getWelcomeMessage(currentLang)]);
+    }
   }, []);
+
+  const handleResetChat = () => {
+    localStorage.removeItem("lotli-history");
+    setCurrentLang("es");
+    localStorage.setItem("lotli-lang", "es");
+    setMessages([getWelcomeMessage("es")]);
+  };
 
   useEffect(() => {
     localStorage.setItem("lotli-history", JSON.stringify(messages));
@@ -46,7 +77,7 @@ const Chatbot = () => {
 
   const toggleChat = () => setIsOpen(prev => !prev);
 
-  const handleSend = (text = null) => {
+  const handleSend = async (text = null) => {
     const input = document.getElementById("user-input");
     const userMessage = text || input.value.trim();
     if (!userMessage) return;
@@ -55,34 +86,50 @@ const Chatbot = () => {
     setMessages(newMessages);
     input.value = "";
 
-    const response = getBotResponse(userMessage.toLowerCase());
-
-    setTimeout(() => {
-      setMessages(prev => [...prev, { sender: "bot", ...response }]);
-    }, 500);
-  };
-
-  const getBotResponse = (msg) => {
-    const t = translations[currentLang];
-
-    if (msg.includes("hola") || msg.includes("hello") || msg.includes("lotli")) {
-      return {
-        text: t.greeting,
-        options: [t.services, t.contact, t.portfolio]
-      };
-    } else if (msg.includes("servicio") || msg.includes("services")) {
-      return {
-        text: currentLang === "es"
-          ? "Ofrecemos desarrollo de software a la medida, sitios web, apps móviles y soluciones empresariales."
-          : "We offer custom software development, websites, mobile apps, and business solutions.",
-        options: currentLang === "es" ? ["Tecnologías", "¿Tienen precios?"] : ["Technologies", "Do you have prices?"]
-      };
-    } else if (msg.includes("contacto") || msg.includes("contact")) {
-      return {
-        text: currentLang === "es"
-          ? "¿Cómo te gustaría contactarnos? 😊"
-          : "How would you like to contact us? 😊",
+    // Respuesta instantánea para contacto directo y WhatsApp
+    if (userMessage === "WhatsApp / Contacto directo" || userMessage === "WhatsApp / Direct contact" || userMessage.toLowerCase().includes("redes")) {
+      const contactMsg = {
+        sender: "bot",
+        text: currentLang === "es" 
+          ? "¡Con gusto! Aquí tienes nuestros canales de atención directa 😊. Puedes escribirnos por WhatsApp o enviarnos un correo:" 
+          : "Sure! Here are our direct contact channels 😊:",
         html: `
+          <div class="contact-buttons">
+            <a href="https://wa.me/5217721005528" target="_blank" class="contact-btn">
+              <i class="fab fa-whatsapp"></i> WhatsApp (+52 772 100 5528)
+            </a>
+            <a href="mailto:LotlwareSolutions@gmail.com" class="contact-btn">
+              <i class="fas fa-envelope"></i> LotlwareSolutions@gmail.com
+            </a>
+          </div>
+        `
+      };
+      setTimeout(() => {
+        setMessages(prev => [...prev, contactMsg]);
+      }, 300);
+      return;
+    }
+
+    setIsTyping(true);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
+      const response = await fetch(`${apiUrl}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          history: messages,
+          message: userMessage
+        })
+      });
+      const data = await response.json();
+      
+      let botResponse = { text: data.text };
+      
+      // Si la IA usó Function Calling para mostrar el formulario
+      if (data.showForm) {
+        botResponse.html = `
           <div class="contact-buttons">
             <a href="https://wa.me/5217721005528" target="_blank" class="contact-btn">
               <i class="fab fa-whatsapp"></i> WhatsApp
@@ -94,13 +141,7 @@ const Chatbot = () => {
               <i class="fas fa-envelope"></i> Correo
             </a>
           </div>
-        `
-      };
-    } else if (msg.includes("formulario") || msg.includes("cotización") || msg.includes("mensaje")) {
-      return {
-        text: "",
-        html: `
-          <div class="formulario-wrapper">
+          <div class="formulario-wrapper" style="margin-top: 15px;">
             <p class="formulario-texto">Por favor, llena el siguiente formulario y te responderemos pronto.</p>
             <form id="contact-form" class="lotli-form">
               <input type="text" name="nombre" placeholder="Tu nombre" required />
@@ -109,13 +150,15 @@ const Chatbot = () => {
               <button type="submit" class="quick-option">Enviar</button>
             </form>
           </div>
-        `
-      };
-    } else {
-      return {
-        text: t.unknown,
-        options: [t.services, t.contact, "Ubicación"]
-      };
+        `;
+      }
+
+      setMessages(prev => [...prev, { sender: "bot", ...botResponse }]);
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, { sender: "bot", text: "❌ Lo siento, estoy teniendo problemas de conexión con mis servidores." }]);
+    } finally {
+      setIsTyping(false);
     }
   };
 
@@ -203,6 +246,7 @@ const Chatbot = () => {
               <span>Asistente Lotli</span>
             </div>
             <div className="chat-controls">
+              <button onClick={handleResetChat} title="Reiniciar chat">🔄</button>
               <button onClick={handleToggleLanguage} title="Cambiar idioma">🌐</button>
               <button onClick={toggleChat}><i className="fas fa-times"></i></button>
             </div>
@@ -210,15 +254,17 @@ const Chatbot = () => {
 
           <div className="chat-box" ref={chatBoxRef}>
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender === "user" ? "user-message" : "bot-message"}`}>
-                {msg.sender === "bot" && <img src={lotliLogo} alt="Lotli" className="bot-logo" />}
-                
-                {(msg.text || msg.html) && (
-                  <div className="bot-content">
-                    {msg.text && <span dangerouslySetInnerHTML={{ __html: msg.text }} />}
-                    {msg.html && <div dangerouslySetInnerHTML={{ __html: msg.html }} />}
-                  </div>
-                )}
+              <div key={index} className={`message-group ${msg.sender === "user" ? "user-group" : "bot-group"}`}>
+                <div className={`message ${msg.sender === "user" ? "user-message" : "bot-message"}`}>
+                  {msg.sender === "bot" && <img src={lotliLogo} alt="Lotli" className="bot-logo" />}
+                  
+                  {(msg.text || msg.html) && (
+                    <div className="bot-content">
+                      {msg.text && <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }} />}
+                      {msg.html && <div dangerouslySetInnerHTML={{ __html: msg.html }} />}
+                    </div>
+                  )}
+                </div>
 
                 {msg.options && (
                   <div className="quick-options">
@@ -229,6 +275,16 @@ const Chatbot = () => {
                 )}
               </div>
             ))}
+            {isTyping && (
+              <div className="message bot-message">
+                <img src={lotliLogo} alt="Lotli" className="bot-logo" />
+                <div className="bot-content">
+                  <span className="typing-dots">
+                    <span></span><span></span><span></span>
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="input-container">

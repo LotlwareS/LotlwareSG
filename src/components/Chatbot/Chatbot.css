@@ -86,16 +86,18 @@ body {
 /* Chat container */
 .chat-container {
   position: fixed;
-  bottom: 90px;
-  right: 30px;
-  width: 350px;
-  max-height: 500px;
+  bottom: 105px;
+  right: 25px;
+  width: min(390px, 92vw);
+  height: min(540px, 78vh);
   background: var(--bg-color);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
   transition: all 0.3s ease-in-out;
 }
 
@@ -153,52 +155,59 @@ body {
   background-color: var(--bg-color);
 }
 
+.message-group {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.user-group {
+  align-items: flex-end;
+}
+
+.bot-group {
+  align-items: flex-start;
+}
+
 .message {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 85%;
+  gap: 10px;
+  padding: 11px 15px;
+  border-radius: 14px;
+  max-width: 88%;
   word-wrap: break-word;
-  animation: fadeInUp 0.3s ease;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.quick-option {
-  animation: fadeInUp 0.3s ease-out;
-  transition: background-color 0.3s;
-}
-
-#chat-container {
-  transition: all 0.3s ease-in-out;
+  line-height: 1.5;
+  font-size: 14px;
+  animation: fadeInUp 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .user-message {
   background-color: var(--user-bubble);
   align-self: flex-end;
-  text-align: right;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .bot-message {
   background-color: var(--bot-bubble);
   align-self: flex-start;
   text-align: left;
-  display: flex;
-  align-items: center;
-  border: 1px solid #012139;
+  border: 1px solid #1a3854;
 }
+
+.bot-content {
+  flex: 1;
+  word-break: break-word;
+}
+
+.bot-content strong {
+  color: #64b5f6;
+  font-weight: 600;
+}
+
 .bot-message:has(.contact-buttons) {
   background-color: var(--bot-bubble) !important;
   border: 1px solid #311c24;
@@ -218,6 +227,29 @@ body {
   width: 24px;
   height: 24px;
   margin-right: 6px;
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 4px;
+}
+
+.typing-dots span {
+  width: 7px;
+  height: 7px;
+  background-color: #8bb4d9;
+  border-radius: 50%;
+  animation: typingBounce 1.3s infinite ease-in-out both;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
 .input-container {
@@ -264,32 +296,32 @@ body {
 .quick-options {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  padding: 10px;
-  gap: 10px;
-  background-color: transparent;
+  gap: 8px;
+  margin-top: 8px;
+  margin-left: 34px;
+  max-width: 88%;
 }
 
 .quick-option {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 14px;
+  background: #0d263f;
+  color: #90caf9;
+  border: 1px solid #1a4d80;
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-}
-
-.bot-message:has(.quick-option) {
-  background-color: transparent !important;
-  box-shadow: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  animation: fadeInUp 0.25s ease-out;
 }
 
 .quick-option:hover {
-  background-color:#012139;
-  transform: scale(1.05);
+  background-color: #1a4d80;
+  border-color: #42a5f5;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
 }
 
 .contact-buttons {
