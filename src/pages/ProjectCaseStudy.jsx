@@ -44,8 +44,8 @@ const ProjectCaseStudy = () => {
             ))}
           </div>
 
-          <div className="case-cover">
-            <i className="fas fa-folder-open"></i>
+          <div className="case-cover" style={{ background: project.cover.gradient }}>
+            <i className={project.cover.icon}></i>
           </div>
 
           <section className="case-split">
@@ -116,7 +116,9 @@ const ProjectCaseStudy = () => {
             <div className="case-related-grid">
               {related.map((p) => (
                 <Link to={`/proyectos/${p.slug}`} className="case-related-card" key={p.slug}>
-                  <i className="fas fa-folder-open"></i>
+                  <div className="case-related-icon" style={{ background: p.cover.gradient }}>
+                    <i className={p.cover.icon}></i>
+                  </div>
                   <h4>{p.title}</h4>
                   <p>{p.description}</p>
                   <span className="case-related-link">Ver proyecto <i className="fas fa-arrow-right"></i></span>

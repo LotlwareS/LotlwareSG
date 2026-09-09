@@ -3,6 +3,7 @@ export const projects = [
     slug: "lotlwaresg-sitio-web",
     title: "LotlwareSG - Sitio Web",
     category: "Sitio Web",
+    cover: { icon: "fas fa-globe", gradient: "linear-gradient(135deg, #4f46e5, #7c3aed)" },
     description:
       "Sitio web oficial de Lotlware Solutions Group construido con React y Vite. Incluye secciones de presentación, equipo, habilidades y chatbot inteligente.",
     tags: ["React", "Vite", "CSS3"],
@@ -26,6 +27,7 @@ export const projects = [
     slug: "chatbot-lotli",
     title: "Chatbot Lotli",
     category: "Módulo Web",
+    cover: { icon: "fas fa-robot", gradient: "linear-gradient(135deg, #0ea5e9, #6366f1)" },
     description:
       "Asistente virtual bilingüe (ES/EN) integrado en el sitio, con historial persistente, modo oscuro y soporte para formulario de contacto.",
     tags: ["React", "JavaScript", "LocalStorage"],
@@ -50,6 +52,7 @@ export const projects = [
     slug: "sistema-de-inventarios",
     title: "Sistema de Inventarios",
     category: "Aplicación Web",
+    cover: { icon: "fas fa-boxes-stacked", gradient: "linear-gradient(135deg, #059669, #0891b2)" },
     description:
       "Aplicación web para gestión de inventario con base de datos MySQL, panel de administración y reportes en PDF.",
     tags: ["PHP", "MySQL", "Bootstrap"],
@@ -73,6 +76,7 @@ export const projects = [
     slug: "app-seguimiento-fitness",
     title: "App de Seguimiento Fitness",
     category: "Aplicación Móvil",
+    cover: { icon: "fas fa-dumbbell", gradient: "linear-gradient(135deg, #f97316, #db2777)" },
     description:
       "Aplicación móvil multiplataforma para rastrear rutinas de ejercicio y progreso personal con estadísticas en tiempo real.",
     tags: ["Flutter", "Firebase", "Dart"],

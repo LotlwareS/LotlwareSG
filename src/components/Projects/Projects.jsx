@@ -3,20 +3,6 @@ import "./Projects.css";
 import { projects } from "../../data/projects";
 import ProjectModal from "./ProjectModal";
 
-const tagColors = {
-  React: "#61dafb",
-  Vite: "#a78bfa",
-  CSS3: "#2596be",
-  JavaScript: "#f0db4f",
-  LocalStorage: "#f97316",
-  PHP: "#8892bf",
-  MySQL: "#00758f",
-  Bootstrap: "#7952b3",
-  Flutter: "#54c5f8",
-  Firebase: "#ffca28",
-  Dart: "#00b4ab",
-};
-
 const Projects = () => {
   const [hovered, setHovered] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -41,34 +27,24 @@ const Projects = () => {
               tabIndex={0}
               onKeyDown={(e) => e.key === "Enter" && setSelected(project)}
             >
-              <div className="project-card-header">
-                <i className="fas fa-folder-open project-folder-icon"></i>
+              <div className="project-cover" style={{ background: project.cover.gradient }}>
+                <i className={project.cover.icon}></i>
               </div>
 
-              <h3 className="project-name">{project.title}</h3>
-              <p className="project-description">{project.description}</p>
+              <div className="project-card-body">
+                <h3 className="project-name">{project.title}</h3>
+                <p className="project-description">{project.description}</p>
 
-              <div className="project-tags">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="project-tag"
-                    style={{ color: tagColors[tag] || "#fff", borderColor: tagColors[tag] || "#fff" }}
-                  >
-                    {tag}
-                  </span>
-                ))}
+                <button
+                  className="project-details-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelected(project);
+                  }}
+                >
+                  Ver detalles
+                </button>
               </div>
-
-              <button
-                className="project-details-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelected(project);
-                }}
-              >
-                Ver detalles
-              </button>
             </div>
           ))}
         </div>

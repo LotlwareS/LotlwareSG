@@ -1,8 +1,10 @@
 import React from "react";
 import "./Equipo.css";
-import enrique from "../../assets/enrique.png";
-import alexander from "../../assets/alexander.png";
-import alexis from "../../assets/alexis.png";
+import enrique from "../../assets/kiketl.png";
+import alexander from "../../assets/alextl.png";
+import brayan from "../../assets/brayantl.png";
+import jhonatan from "../../assets/jhonatl.png";
+import sebastian from "../../assets/sebastl.png";
 
 const miembros = [
   {
@@ -20,8 +22,20 @@ const miembros = [
     icon: "fas fa-paint-brush",
   },
   {
-    img: alexis,
-    nombre: "Alexis Josué Badillo Trejo",
+    img: brayan,
+    nombre: "Brayan A. Gutierrez Calva",
+    rol: "DevOps & QA",
+    descripcion: "Experto en automatización, testing y soporte técnico de infraestructura.",
+    icon: "fas fa-cogs",
+  },{
+    img: jhonatan,
+    nombre: "Jhonatan Jaramillo Lievano",
+    rol: "DevOps & QA",
+    descripcion: "Experto en automatización, testing y soporte técnico de infraestructura.",
+    icon: "fas fa-cogs",
+  },{
+    img: sebastian,
+    nombre: "Sebastian Montiel Monreno",
     rol: "DevOps & QA",
     descripcion: "Experto en automatización, testing y soporte técnico de infraestructura.",
     icon: "fas fa-cogs",

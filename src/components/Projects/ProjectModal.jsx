@@ -20,7 +20,7 @@ const ProjectModal = ({ project, onClose }) => {
       <div className="project-modal" onClick={(e) => e.stopPropagation()}>
         <div className="project-modal-header">
           <h3>
-            <i className="fas fa-folder-open"></i> {project.title}
+            <i className={project.cover.icon}></i> {project.title}
           </h3>
           <button className="project-modal-close" onClick={onClose} aria-label="Cerrar">
             <i className="fas fa-times"></i>
@@ -29,8 +29,8 @@ const ProjectModal = ({ project, onClose }) => {
 
         <div className="project-modal-body">
           <div className="project-modal-top">
-            <div className="project-modal-cover">
-              <i className="fas fa-folder-open"></i>
+            <div className="project-modal-cover" style={{ background: project.cover.gradient }}>
+              <i className={project.cover.icon}></i>
             </div>
             <p className="project-modal-description">{project.description}</p>
           </div>

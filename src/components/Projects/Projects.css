@@ -35,11 +35,10 @@
 .project-card {
   background: #222930;
   border-radius: 14px;
-  padding: 28px 24px;
+  overflow: hidden;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 14px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   border: 1px solid transparent;
   transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
@@ -52,30 +51,21 @@
   border-color: rgba(100, 108, 255, 0.4);
 }
 
-.project-card-header {
+.project-cover {
+  height: 170px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.project-folder-icon {
-  font-size: 2rem;
-  color: #646cff;
-}
-
-.project-links {
+.project-card-body {
+  padding: 22px 24px 24px;
   display: flex;
+  flex-direction: column;
   gap: 14px;
-}
-
-.project-links a {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1.1rem;
-  transition: color 0.3s;
-}
-
-.project-links a:hover {
-  color: #fff;
+  flex: 1;
 }
 
 .project-name {
@@ -89,21 +79,6 @@
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
   flex: 1;
-}
-
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.project-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  border: 1px solid;
-  opacity: 0.85;
 }
 
 .project-details-btn {

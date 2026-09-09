@@ -92,13 +92,11 @@
   width: 100%;
   height: 340px;
   border-radius: 16px;
-  background: linear-gradient(145deg, #2a3140, #1a2030);
-  border: 1px solid rgba(100, 108, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  color: rgba(100, 108, 255, 0.45);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 44px;
 }
 
@@ -279,6 +277,18 @@
 .case-related-card > i {
   color: #646cff;
   font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.case-related-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4px;
 }
 
