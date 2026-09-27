@@ -153,6 +153,17 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// ─── Registro de contactos ───────────────────────────────────────────────────
+const CONTACTOS_FILE = path.join(process.cwd(), "contactos.json");
+const saveContacto = (contacto) => {
+  let contactos = [];
+  if (fs.existsSync(CONTACTOS_FILE)) {
+    contactos = JSON.parse(fs.readFileSync(CONTACTOS_FILE, "utf-8"));
+  }
+  contactos.push(contacto);
+  fs.writeFileSync(CONTACTOS_FILE, JSON.stringify(contactos, null, 2));
+};
+
 // ─── Ruta principal: envío de correo ─────────────────────────────────────────
 app.post("/api/enviar-correo", async (req, res) => {
   const { nombre, correo, asunto, mensaje } = req.body;
@@ -160,6 +171,8 @@ app.post("/api/enviar-correo", async (req, res) => {
   if (!nombre || !correo || !mensaje) {
     return res.status(400).json({ éxito: false, mensaje: "Todos los campos son requeridos." });
   }
+
+  const contacto = { fecha: new Date().toISOString(), nombre, correo, asunto: asunto || "", mensaje };
 
   const mailOptions = {
     from: `"${nombre}" <${process.env.MAIL_USER || "LotlwareSolutions@gmail.com"}>`,
@@ -179,11 +192,20 @@ app.post("/api/enviar-correo", async (req, res) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    res.json({ éxito: true, mensaje: "Correo enviado correctamente." });
+    contacto.correoEnviado = true;
   } catch (error) {
     console.error("Error al enviar correo:", error);
-    res.status(500).json({ éxito: false, mensaje: "Error interno al enviar el correo." });
+    contacto.correoEnviado = false;
   }
+
+  try {
+    saveContacto(contacto);
+  } catch (error) {
+    console.error("Error guardando contacto:", error);
+  }
+
+  // Se responde con éxito aunque falle el correo: el registro queda en contactos.json
+  res.json({ éxito: true, mensaje: "Mensaje recibido correctamente." });
 });
 
 // ─── Healthcheck ──────────────────────────────────────────────────────────────

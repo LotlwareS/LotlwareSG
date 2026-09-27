@@ -82,7 +82,9 @@ const Contact = () => {
             </button>
 
             {status === "success" && (
-              <p className="contact-feedback success">✅ ¡Mensaje enviado correctamente!</p>
+              <p className="contact-feedback success">
+                ✅ ¡Mensaje enviado con éxito! Nuestro equipo se pondrá en contacto contigo pronto.
+              </p>
             )}
             {status === "error" && (
               <p className="contact-feedback error">❌ No se pudo enviar el mensaje. Intenta de nuevo.</p>
